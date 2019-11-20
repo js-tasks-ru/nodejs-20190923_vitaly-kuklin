@@ -1,1 +1,5 @@
-IyBUYXNrcwoK0JfQsNC00LDRh9C90LjQuiDQtNC70Y8g0LrRg9GA0YHQsCDQv9C+IE5vZGUuSlMg0L3QsCDRgdCw0LnRgtC1IGh0dHBzOi8vbGVhcm4uamF2YXNjcmlwdC5ydS9jb3Vyc2VzL25vZGVqcy4KCtCh0L7QtNC10YDQttC40YIg0YLQtdC+0YDQtdGC0LjRh9C10YHQutC40LUg0LzQsNGC0LXRgNC40LDQu9GLINC4INC/0YDQsNC60YLQuNGH0LXRgdC60LjQtSDQt9Cw0LTQsNC90LjRjy4K
+# Tasks
+
+Задачник для курса по Node.JS на сайте https://learn.javascript.ru/courses/nodejs.
+
+Содержит теоретические материалы и практические задания.

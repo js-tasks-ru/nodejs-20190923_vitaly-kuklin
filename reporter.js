@@ -1,1 +1,45 @@
-Y29uc3QgbW9jaGEgPSByZXF1aXJlKCdtb2NoYScpOwoKZnVuY3Rpb24gUmVwb3J0ZXIocnVubmVyKSB7CiAgbW9jaGEucmVwb3J0ZXJzLkJhc2UuY2FsbCh0aGlzLCBydW5uZXIpOwogIGxldCBwYXNzZXMgPSAwOwogIGxldCBmYWlsdXJlcyA9IDA7CiAgY29uc3QgdGVzdHMgPSBbXTsKCiAgcnVubmVyLm9uKCdwYXNzJywgZnVuY3Rpb24odGVzdCkgewogICAgcGFzc2VzKys7CiAgICB0ZXN0cy5wdXNoKHsKICAgICAgZGVzY3JpcHRpb246IHRlc3QudGl0bGUsCiAgICAgIHN1Y2Nlc3M6IHRydWUsCiAgICAgIHN1aXRlOiB0ZXN0LnBhcmVudC50aXRsZVBhdGgoKSwKICAgICAgdGltZTogdGVzdC5kdXJhdGlvbiwKICAgIH0pOwogIH0pOwoKICBydW5uZXIub24oJ2ZhaWwnLCBmdW5jdGlvbih0ZXN0LCBlcnIpIHsKICAgIGZhaWx1cmVzKys7CiAgICB0ZXN0cy5wdXNoKHsKICAgICAgZGVzY3JpcHRpb246IHRlc3QudGl0bGUsCiAgICAgIHN1Y2Nlc3M6IGZhbHNlLAogICAgICBzdWl0ZTogdGVzdC5wYXJlbnQudGl0bGVQYXRoKCksCiAgICAgIHRpbWU6IHRlc3QuZHVyYXRpb24sCiAgICB9KTsKICB9KTsKCiAgcnVubmVyLm9uKCdlbmQnLCBmdW5jdGlvbigpIHsKICAgIGNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHsKICAgICAgcmVzdWx0OiB7CiAgICAgICAgbW9jaGE6IHRlc3RzLAogICAgICB9LAogICAgICBzdW1tYXJ5OiB7CiAgICAgICAgc3VjY2VzczogcGFzc2VzLAogICAgICAgIGZhaWxlZDogZmFpbHVyZXMsCiAgICAgIH0sCiAgICB9KSk7CiAgfSk7Cn0KCm1vZHVsZS5leHBvcnRzID0gUmVwb3J0ZXI7CgovLyBUbyBoYXZlIHRoaXMgcmVwb3J0ZXIgImV4dGVuZCIgYSBidWlsdC1pbiByZXBvcnRlciB1bmNvbW1lbnQgdGhlIGZvbGxvd2luZyBsaW5lOgovLyBtb2NoYS51dGlscy5pbmhlcml0cyhNeVJlcG9ydGVyLCBtb2NoYS5yZXBvcnRlcnMuU3BlYyk7Cg==
+const mocha = require('mocha');
+
+function Reporter(runner) {
+  mocha.reporters.Base.call(this, runner);
+  let passes = 0;
+  let failures = 0;
+  const tests = [];
+
+  runner.on('pass', function(test) {
+    passes++;
+    tests.push({
+      description: test.title,
+      success: true,
+      suite: test.parent.titlePath(),
+      time: test.duration,
+    });
+  });
+
+  runner.on('fail', function(test, err) {
+    failures++;
+    tests.push({
+      description: test.title,
+      success: false,
+      suite: test.parent.titlePath(),
+      time: test.duration,
+    });
+  });
+
+  runner.on('end', function() {
+    console.log(JSON.stringify({
+      result: {
+        mocha: tests,
+      },
+      summary: {
+        success: passes,
+        failed: failures,
+      },
+    }));
+  });
+}
+
+module.exports = Reporter;
+
+// To have this reporter "extend" a built-in reporter uncomment the following line:
+// mocha.utils.inherits(MyReporter, mocha.reporters.Spec);

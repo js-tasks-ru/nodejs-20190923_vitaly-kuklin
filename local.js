@@ -1,1 +1,56 @@
-LyogZXNsaW50LWRpc2FibGUgKi8KCmNvbnN0IE1vY2hhID0gcmVxdWlyZSgnbW9jaGEnKTsKY29uc3QgZnMgPSByZXF1aXJlKCdmcycpOwpjb25zdCBwYXRoID0gcmVxdWlyZSgncGF0aCcpOwpjb25zdCBnbG9iID0gcmVxdWlyZSgnZ2xvYicpOwoKcmVxdWlyZSgnY29sb3JzJyk7Cgpjb25zdCBfbW9kdWxlID0gcHJvY2Vzcy5hcmd2WzJdOwpjb25zdCB0YXNrID0gcHJvY2Vzcy5hcmd2WzNdOwoKaWYgKCFfbW9kdWxlKSB7CiAgcmV0dXJuIGNvbnNvbGUuZXJyb3IoCiAgICBgJHsn0J3QtSDRg9C60LDQt9Cw0L0g0LzQvtC00YPQu9GMINGBINC30LDQtNCw0YfQtdC5LiDQndCw0L/RgNC40LzQtdGAOicucmVkLmJvbGR9CiAgJHsnbnBtIHJ1biB0ZXN0OmxvY2FsIDAtbW9kdWxlIDEtdGFzaycueWVsbG93fWAKICApOwp9CgppZiAoIXRhc2spIHsKICByZXR1cm4gY29uc29sZS5lcnJvcigKICAgIGAkeyfQndC1INGD0LrQsNC30LDQvdCwINC30LDQtNCw0YfQsC4g0J3QsNC/0YDQuNC80LXRgDonLnJlZC5ib2xkfQogICR7J25wbSBydW4gdGVzdDpsb2NhbCAwLW1vZHVsZSAxLXRhc2snLnllbGxvd31gCiAgKTsKfQoKY29uc3QgbW9jaGEgPSBuZXcgTW9jaGEoewogIHJlcG9ydGVyOiAnc3BlYycsCiAgdXNlQ29sb3JzOiB0cnVlLAp9KTsKCgpjb25zdCB0ZXN0RGlyID0gcGF0aC5qb2luKF9fZGlybmFtZSwgX21vZHVsZSwgdGFzaywgJ3Rlc3QnKTsKCmlmICghZnMuZXhpc3RzU3luYyh0ZXN0RGlyKSkgewogIHJldHVybiBjb25zb2xlLmVycm9yKAogICAgYCR7J9CX0LDQtNCw0YfQsCcucmVkLmJvbGR9ICR7YCR7X21vZHVsZX0vJHt0YXNrfWAueWVsbG93fSAkeyfQvtGC0YHRg9GC0YHRgtCy0YPQtdGCLiDQn9GA0L7QstC10YDRjNGC0LUg0L/RgNCw0LLQuNC70YzQvdC+0YHRgtGMINC60L7QvNCw0L3QtNGLLicucmVkLmJvbGR9YAogICk7Cn0KCmNvbnN0IGZpbGVzID0gZ2xvYi5zeW5jKGAke3Rlc3REaXJ9LyoqLyoudGVzdC5qc2ApOwoKaWYgKCFmaWxlcy5sZW5ndGgpIHsKICByZXR1cm4gY29uc29sZS5lcnJvcigKICAgIGAkeyfQmiDQt9Cw0LTQsNGH0LUnLnJlZC5ib2xkfSAke2Ake19tb2R1bGV9LyR7dGFza31gLnllbGxvd30gJHsn0L7RgtGB0YPRgtGB0YLQstGD0Y7RgiDRgtC10YHRgtGLJy5yZWQuYm9sZH1gCiAgKTsKfQoKZmlsZXMuZm9yRWFjaChmaWxlID0+IHsKICBtb2NoYS5hZGRGaWxlKGZpbGUpOwp9KTsKCi8vIFJ1biB0aGUgdGVzdHMuCm1vY2hhLnJ1bihmdW5jdGlvbihmYWlsdXJlcykgewogIHByb2Nlc3MuZXhpdENvZGUgPSBmYWlsdXJlcyA/IDEgOiAwOwp9KTsK
+/* eslint-disable */
+
+const Mocha = require('mocha');
+const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
+
+require('colors');
+
+const _module = process.argv[2];
+const task = process.argv[3];
+
+if (!_module) {
+  return console.error(
+    `${'Не указан модуль с задачей. Например:'.red.bold}
+  ${'npm run test:local 0-module 1-task'.yellow}`
+  );
+}
+
+if (!task) {
+  return console.error(
+    `${'Не указана задача. Например:'.red.bold}
+  ${'npm run test:local 0-module 1-task'.yellow}`
+  );
+}
+
+const mocha = new Mocha({
+  reporter: 'spec',
+  useColors: true,
+});
+
+
+const testDir = path.join(__dirname, _module, task, 'test');
+
+if (!fs.existsSync(testDir)) {
+  return console.error(
+    `${'Задача'.red.bold} ${`${_module}/${task}`.yellow} ${'отсутствует. Проверьте правильность команды.'.red.bold}`
+  );
+}
+
+const files = glob.sync(`${testDir}/**/*.test.js`);
+
+if (!files.length) {
+  return console.error(
+    `${'К задаче'.red.bold} ${`${_module}/${task}`.yellow} ${'отсутствуют тесты'.red.bold}`
+  );
+}
+
+files.forEach(file => {
+  mocha.addFile(file);
+});
+
+// Run the tests.
+mocha.run(function(failures) {
+  process.exitCode = failures ? 1 : 0;
+});

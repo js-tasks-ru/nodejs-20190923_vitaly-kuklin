@@ -1,1 +1,13 @@
-ZW52OgogIGNvbW1vbmpzOiB0cnVlCiAgZXM2OiB0cnVlCiAgbm9kZTogdHJ1ZQpleHRlbmRzOiBnb29nbGUKcGFyc2VyT3B0aW9uczoKICBlY21hVmVyc2lvbjogMjAxOApydWxlczoKICBtYXgtbGVuOgogICAgLSBlcnJvcgogICAgLSBjb2RlOiAxMDAKICByZXF1aXJlLWpzZG9jOgogICAgLSBvZmYK
+env:
+  commonjs: true
+  es6: true
+  node: true
+extends: google
+parserOptions:
+  ecmaVersion: 2018
+rules:
+  max-len:
+    - error
+    - code: 100
+  require-jsdoc:
+    - off
