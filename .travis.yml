@@ -1,12 +1,1 @@
-language: node_js
-node_js:
-  - 12.4.0
-
-services:
-  - mongodb
-
-script: npm test --silent
-
-notifications:
-  webhooks:
-    - https://learn.javascript.ru/taskbook/travis/notifications
+bGFuZ3VhZ2U6IG5vZGVfanMKbm9kZV9qczoKICAtIDEyLjQuMAoKc2VydmljZXM6CiAgLSBtb25nb2RiCgpzY3JpcHQ6IG5wbSB0ZXN0IC0tc2lsZW50Cgpub3RpZmljYXRpb25zOgogIHdlYmhvb2tzOgogICAgLSBodHRwczovL2xlYXJuLmphdmFzY3JpcHQucnUvdGFza2Jvb2svdHJhdmlzL25vdGlmaWNhdGlvbnMK
